@@ -1,0 +1,25 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  .header {
+    height: 80px;
+    width: 100%;
+    // background: blue;
+  }
+  .main-container {
+    flex: 1;
+    .sidebar-left {
+      .active {
+        background: blue;
+      }
+
+      .inactive {
+        background: none;
+      }
+    }
+
+    // background: red;
+  }
+}
