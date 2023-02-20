@@ -1,12 +1,19 @@
 import React from "react";
-import { Button, Space } from "antd";
+import { Button, Checkbox, Space } from "antd";
 import "./index.scss";
 
 function Header() {
   return (
     <div className="header">
       <div className="leftSide">
-        <Button>{"Create React App"} </Button>
+        {/* <div>
+          <Checkbox>Step 1</Checkbox>
+          <Checkbox>Step 2</Checkbox>
+          <Checkbox>Step 3</Checkbox>
+        </div> */}
+        <div>
+          <Button>{"Create Scenario"} </Button>
+        </div>
       </div>
       <Space className="rightSide">
         <Button>{"Docs"} </Button>
