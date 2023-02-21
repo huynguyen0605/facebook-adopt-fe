@@ -9,6 +9,10 @@ interface Step {
   name: string;
 }
 
+interface Scenario {
+  Scenario: string;
+}
+
 const columns: ColumnsType<Step> = [
   {
     title: "Id",
@@ -24,10 +28,28 @@ const columns: ColumnsType<Step> = [
   },
 ];
 
+const columns2: ColumnsType<Scenario> = [
+  {
+    title: "Id",
+    dataIndex: "id",
+  },
+  {
+    title: "Tên kịch bản",
+    dataIndex: "functionName",
+  },
+  // {
+  //   title: "Tên bước",
+  //   dataIndex: "name",
+  // },
+];
+
+
 const Body: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRowKeys2, setSelectedRowKeys2] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
-  let [steps, setSteps] = useState<Step[]>([]); //state
+  const [steps, setSteps] = useState<Step[]>([]); //state
+  const [scenarios, setScenarios] = useState<Scenario[]>([]);
 
   useEffect(() => {
     console.log("huynvq::==========>mount");
@@ -48,8 +70,13 @@ const Body: React.FC = () => {
         stepIds: selectedRowKeys,
       })
       .then();
+    axios
+      .get("http://localhost:3001/get-scenario").then((response) => {
+      setScenarios(response.data.scenarios);
+      })
   };
 
+  // phần này dành cho Steps
   const onSelectChange = (stepIds: React.Key[]) => {
     console.log("selectedRowKeys changed: ", stepIds);
     setSelectedRowKeys(stepIds);
@@ -61,9 +88,22 @@ const Body: React.FC = () => {
   };
   const hasSelected = selectedRowKeys.length > 0;
 
+  // Phần này dành cho Scenario
+  const onSelectChange2 = (ScenarioIds: React.Key[]) => {
+    console.log("selectedRowKeys2 changed: ", ScenarioIds);
+    setSelectedRowKeys2(ScenarioIds);
+  };
+  
+  const rowSelection2 = {
+    selectedRowKeys2,
+    onChange: onSelectChange2,
+  };
+  const hasSelected2 = selectedRowKeys2.length > 0;
+
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
+        {/* Phần này dành cho Create Scenario */}
         <Button
           type="primary"
           onClick={start}
@@ -80,6 +120,24 @@ const Body: React.FC = () => {
         rowSelection={rowSelection}
         columns={columns}
         dataSource={steps}
+        rowKey="id"
+      />
+      {/* Phần này dành cho Run Scenario */}
+      <Button
+          type="primary"
+          // onClick={start}
+          disabled={!hasSelected2}
+          // loading={loading}
+        >
+          Run Scenarios
+      </Button>
+      <span style={{ marginLeft: 8 }}>
+          {hasSelected2 ? `Selected ${selectedRowKeys2.length} items` : ""}
+        </span>
+      <Table
+        rowSelection={rowSelection2}
+        columns={columns2}
+        dataSource={scenarios}
         rowKey="id"
       />
     </div>
