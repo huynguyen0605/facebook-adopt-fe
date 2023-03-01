@@ -62,6 +62,7 @@ const Body: React.FC = () => {
       console.log("huynvq::============>unmount");
     };
   }, []);
+  //////
   const start = () => {
     setLoading(true);
     // ajax request after empty completing
@@ -89,6 +90,14 @@ const Body: React.FC = () => {
   const hasSelected = selectedRowKeys.length > 0;
 
   // Phần này dành cho Scenario
+  const deleteRow = () => { 
+    setLoading(true);
+    selectedRowKeys2.forEach((ScenarioIds) => {
+    axios.delete(`http://localhost:3001/delete-scenario/${ScenarioIds}`)
+    .then();
+    });
+  }
+
   const onSelectChange2 = (ScenarioIds: React.Key[]) => {
     console.log("selectedRowKeys2 changed: ", ScenarioIds);
     setSelectedRowKeys2(ScenarioIds);
@@ -131,6 +140,16 @@ const Body: React.FC = () => {
         >
           Run Scenarios
       </Button>
+
+      <Button
+          type="primary"
+          onClick={deleteRow}
+          disabled={!hasSelected2}
+          // loading={loading}
+        >
+          Delete Scenarios
+      </Button>
+
       <span style={{ marginLeft: 8 }}>
           {hasSelected2 ? `Selected ${selectedRowKeys2.length} items` : ""}
         </span>
